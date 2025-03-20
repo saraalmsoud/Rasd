@@ -1,1 +1,3 @@
 Models/best_model.pt
+config/firebase-config.json
+.env
