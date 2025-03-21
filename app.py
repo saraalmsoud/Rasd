@@ -60,9 +60,14 @@ st.markdown(
 
 
 
-# Load Firebase data if not already loaded
+import firebase_admin
+from firebase_admin import credentials
+
+# تحميل ملف الشهادات السرية من Render Secrets
+cred = credentials.Certificate("/etc/secrets/rasd-project.json")
+
+# تهيئة Firebase
 if not firebase_admin._apps:
-    cred = credentials.Certificate("config/rasd-project.json")  # Ensure the path is correct
     firebase_admin.initialize_app(cred)
 
 db = firestore.client()
