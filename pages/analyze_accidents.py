@@ -8,9 +8,22 @@ if not firebase_admin._apps:
     cred = credentials.Certificate("config/rasd-project.json")
     firebase_admin.initialize_app(cred)
 
+
 db = firestore.client()
 
 def show():
+    
+
+    st.markdown(
+        """
+        <style>
+            [data-testid="stSidebarNav"] { 
+                display: none !important;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
     st.markdown("""
         <style>
             * {
