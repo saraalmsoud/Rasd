@@ -10,12 +10,10 @@ def show():
         </style>
     """, unsafe_allow_html=True)
 
-    # ✅ تصميم الصفحة مع أنيميشن صحيح للنص والصورة
     st.markdown("""
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
 
-            /* ✅ أنيميشن للنص */
             @keyframes slideInLeft {
                 0% {
                     opacity: 0;
@@ -27,7 +25,6 @@ def show():
                 }
             }
 
-            /* ✅ أنيميشن للصورة */
             @keyframes slideInRight {
                 0% {
                     opacity: 0;
@@ -59,7 +56,6 @@ def show():
                 padding: 40px 20px;
             }
 
-            /* ✅ تطبيق الأنيميشن فقط على النص */
             .text-section {
                 flex: 1;
                 padding-left: 50px;
@@ -91,7 +87,6 @@ def show():
                 margin-bottom: 20px;
             }
 
-            /* ✅ جعل الصورة تتحرك عند تحميلها */
             .gif-container {
                 flex: 1;
                 text-align: center;
@@ -100,7 +95,6 @@ def show():
                 align-items: flex-start;
             }
 
-            /* ✅ التأكد من أن الصورة تتحرك عند تحميل الصفحة */
             .stImage img {
                 animation: slideInRight 1.2s ease-out;
                 border-radius: 10px;
@@ -111,10 +105,8 @@ def show():
         </style>
     """, unsafe_allow_html=True)
 
-    # ✅ تقسيم الصفحة لجزئين (نص على اليسار، صورة على اليمين)
     col1, col2 = st.columns([1.2, 1])
 
-    # ✅ القسم النصي (يسار)
     with col1:
         st.markdown("""
             <div class='text-section'>
@@ -126,7 +118,6 @@ def show():
             </div>
         """, unsafe_allow_html=True)
 
-    # ✅ القسم الخاص بـ GIF (يمين)
     with col2:
         with st.container():
-            st.image("static/cropped_animation_NEW2.gif", use_column_width=True)  # ✅ ضمان ظهور الصورة مع الأنيميشن
+            st.image("static/cropped_animation_NEW2.gif", use_column_width=True)  
