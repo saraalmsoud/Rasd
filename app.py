@@ -3,17 +3,70 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import time
 
-# ✅ إعداد الصفحة
+# Page setup
 st.set_page_config(page_title="RASD", page_icon="🚗", layout="wide")
 
-# ✅ تحميل بيانات Firebase إذا لم تكن مُحمّلة بالفعل
+
+st.markdown(
+    """
+    <style>
+        #MainMenu {visibility: hidden;} /* يخفي القائمة العلوية */
+        header {visibility: hidden;} /* يخفي الهيدر */
+        footer {visibility: hidden;} /* يخفي الفوتر */
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    """
+    <style>
+        #MainMenu {visibility: hidden;} /* إخفاء القائمة العلوية */
+        header {visibility: hidden;} /* إخفاء الهيدر */
+        footer {visibility: hidden;} /* إخفاء الفوتر */
+
+        /* 🔹 تعديل موقع الشريط */
+        div.stTabs {
+            position: fixed; /* تثبيت الشريط */
+            top: 0px; /* رفع الشريط للأعلى */
+            left: 0;
+            width: 100%;
+            z-index: 1000; /* التأكد إنه فوق كل شيء */
+            background-color: rgba(0, 0, 0, 0.7); /* خلفية شفافة */
+            padding: 10px 0px;
+        }
+
+        /* 🔹 رفع المحتوى الرئيسي */
+        .block-container {
+            margin-top: -120px; /* تعديل المسافة بين الشريط والمحتوى */
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+st.markdown(
+    """
+    <style>
+        /* إخفاء زر القائمة الجانبية */
+        button[title="Toggle sidebar"] {
+            display: none !important;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+
+# Load Firebase data if not already loaded
 if not firebase_admin._apps:
-    cred = credentials.Certificate("config/rasd-project.json")  # تأكد أن المسار صحيح
+    cred = credentials.Certificate("config/rasd-project.json")  # Ensure the path is correct
     firebase_admin.initialize_app(cred)
 
 db = firestore.client()
-
-# ✅ تضمين Firebase JavaScript في Streamlit
+# Embed Firebase JavaScript in Streamlit
 st.markdown("""
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js"></script>
@@ -26,27 +79,27 @@ st.markdown("""
           if (currentToken) {
             console.log("🔔 FCM Token:", currentToken);
           } else {
-            console.log("❌ لم يتم العثور على توكن.");
+            console.log("❌ Token not found.");
           }
         }).catch((err) => {
-          console.log("❌ خطأ في جلب التوكن:", err);
+          console.log("❌ Error fetching token:", err);
         });
       } else {
-        console.log("❌ تم رفض الإذن بالإشعارات.");
+        console.log("❌ Notification permission denied.");
       }
     });
   }
 
   messaging.onMessage((payload) => {
-    console.log("🔔 إشعار جديد وصل:", payload);
-    alert("🚨 إشعار جديد: " + payload.notification.title + "\\n" + payload.notification.body);
+    console.log("🔔 New notification received:", payload);
+    alert("🚨 New Notification: " + payload.notification.title + "\\n" + payload.notification.body);
   });
 
   requestNotificationPermission();
 </script>
 """, unsafe_allow_html=True)
 
-# ✅ إخفاء الشريط الجانبي في Streamlit
+# Hide the sidebar in Streamlit
 st.markdown("""
     <style>
         [data-testid="stSidebar"] { display: none !important; }
@@ -54,14 +107,14 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ✅ إضافة خط Merriweather
+# Add Merriweather font
 st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
         * { font-family: 'Merriweather', serif !important; }
         .top-navbar {
             position: fixed;
-            top: 60px;
+            top: 0px;
             left: 0%;
             width: 100%;
             min-height: 55px;
@@ -99,11 +152,11 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ✅ جلب الصفحة الحالية من الرابط
+# Get the current page from the URL
 query_params = st.query_params
 current_page = query_params.get("page", "home")
 
-# ✅ شريط التنقل العلوي
+# Top navigation bar
 st.markdown(f"""
     <div class="top-navbar">
         <a href="/?page=home" class="nav-item {'active' if current_page == 'home' else ''}">Home</a>
@@ -113,7 +166,7 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-# ✅ عرض الصفحة المطلوبة بناءً على التنقل
+# Display the requested page based on navigation
 if current_page == "home":
     from pages import home
     home.show()
@@ -124,5 +177,5 @@ elif current_page == "map":
     from pages import map
     map.show()
 elif current_page == "notifications":
-    from pages import notifications  # 🔥 صفحة الإشعارات الجديدة
+    from pages import notifications  # 🔥 New notifications page
     notifications.show()
