@@ -1,14 +1,11 @@
 import firebase_admin
 from firebase_admin import credentials, firestore, messaging
 
-# تحميل مفاتيح Firebase
 cred = credentials.Certificate("config/rasd-project.json")
 firebase_admin.initialize_app(cred)
 
-# الاتصال بقاعدة البيانات Firestore
 db = firestore.client()
 
-# ✅ دالة إرسال الإشعار عبر Firebase Cloud Messaging
 def send_notification(title, body):
     print("📢 محاولة إرسال إشعار...")
     print(f"🔹 العنوان: {title}")
@@ -18,12 +15,11 @@ def send_notification(title, body):
             title=title,
             body=body
         ),
-        topic="accidents"  # اسم التوبيك اللي بتستخدمه للمشتركين
+        topic="accidents"  
     )
     response = messaging.send(message)
     print("✅ تم إرسال الإشعار:", response)
 
-# ✅ متابعة إضافات جديدة في Firestore
 def watch_accidents():
     def on_snapshot(col_snapshot, changes, read_time):
         for change in changes:
@@ -34,8 +30,7 @@ def watch_accidents():
                 send_notification(title, body)  # إرسال الإشعار
 
     accidents_ref = db.collection("accidents")
-    accidents_ref.on_snapshot(on_snapshot)  # تشغيل المراقبة
+    accidents_ref.on_snapshot(on_snapshot) 
 
-# ✅ تشغيل المراقبة عند تشغيل السكريبت
 watch_accidents()
 print("👀 مراقبة Firestore تعمل الآن...")
