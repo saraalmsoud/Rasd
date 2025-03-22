@@ -22,18 +22,16 @@ def show():
             }
 
             .stApp {
-                background-color: #373A40 !important;
+                background-color: #2A2C30 !important;
             }
 
             /* Fade-in Animation */
-            @keyframes fadeIn {
+            @keyframes fadeInSoft {
                 from {
                     opacity: 0;
-                    transform: translateY(-20px);
                 }
                 to {
                     opacity: 1;
-                    transform: translateY(0);
                 }
             }
 
@@ -42,7 +40,7 @@ def show():
                 font-weight: 700;
                 text-align: center;
                 margin-bottom: 10px;
-                animation: fadeIn 1s ease-in-out;
+                animation: fadeInSoft 1s ease-in-out;
             }
 
             .divider {
@@ -52,7 +50,7 @@ def show():
                 margin: auto;
                 margin-bottom: 20px;
                 border-radius: 2px;
-                animation: fadeIn 1.2s ease-in-out;
+                animation: fadeInSoft 1.2s ease-in-out;
             }
 
             .stats {
@@ -60,7 +58,7 @@ def show():
                 font-size: 18px;
                 font-weight: bold;
                 margin-bottom: 15px;
-                animation: fadeIn 1.4s ease-in-out;
+                animation: fadeInSoft 1.4s ease-in-out;
             }
 
             .severe { color: #ff4c4c; } 
@@ -94,12 +92,33 @@ def show():
             .leaflet-marker-icon {
                 animation: pulse 1.5s infinite;
             }
+            
+            button {
+                background-color: #3657C2 !important;
+                color: white !important;
+                font-size: 14px !important;
+                font-weight: bold !important;
+                padding: 8px 15px !important;
+                border-radius: 25px !important;
+                border: none !important;
+                cursor: pointer !important;
+                width: 100% !important;
+                transition: background-color 0.3s ease-in-out, transform 0.1s ease-in-out;
+            }
+
+            button:hover {
+                background-color: #4B6FD6 !important;
+            }
+
+            button:active {
+                transform: scale(0.95);
+            }
 
         </style>
     """, unsafe_allow_html=True)
 
     st.markdown("<h1 class='title'>Accident Map</h1>", unsafe_allow_html=True)
-    st.markdown("<div class='divider'></div>", unsafe_allow_html=True)  # ✅ إضافة خط فاصل متحرك
+    st.markdown("<div class='divider'></div>", unsafe_allow_html=True) 
 
     try:
         accidents_ref = db.collection("accidents").stream()
