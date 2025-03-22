@@ -32,12 +32,12 @@ def show():
     st.markdown("""
         <style>
             .stApp {
-                background-color: #373A40 !important;
+                background-color: #2A2C30 !important;
             }
 
             /* Notification card with smooth fade-in */
             .notification-card {
-                background-color: #222831;
+                background-color: #1e1e1e;
                 padding: 15px;
                 margin-bottom: 12px;
                 border-radius: 10px;
@@ -75,6 +75,28 @@ def show():
                     opacity: 1;
                     transform: translateY(0);
                 }
+            }
+            
+            
+            button {
+                background-color: #3657C2 !important;
+                color: white !important;
+                font-size: 14px !important;
+                font-weight: bold !important;
+                padding: 8px 15px !important;
+                border-radius: 25px !important;
+                border: none !important;
+                cursor: pointer !important;
+                width: 100% !important;
+                transition: background-color 0.3s ease-in-out, transform 0.1s ease-in-out;
+            }
+
+            button:hover {
+                background-color: #4B6FD6 !important;
+            }
+
+            button:active {
+                transform: scale(0.95);
             }
         </style>
     """, unsafe_allow_html=True)
