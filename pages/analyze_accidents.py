@@ -31,7 +31,7 @@ def show():
             }
 
             .stApp {
-                background-color: #373A40 !important;
+                background-color: #2A2C30 !important;
             }
 
             /* Animation for report cards */
@@ -63,7 +63,7 @@ def show():
             }
 
             .report-card {
-                background-color: #222831 !important;
+                background-color: #1e1e1e !important;
                 border-radius: 10px !important;
                 padding: 12px !important;
                 margin-bottom: 12px !important;
