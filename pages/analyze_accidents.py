@@ -5,7 +5,7 @@ from firebase_admin import firestore
 
 if not firebase_admin._apps:
     from firebase_admin import credentials
-    cred = credentials.Certificate("config/rasd-project.json")
+    cred = credentials.Certificate("/etc/secrets/rasd-project.json")
     firebase_admin.initialize_app(cred)
 
 
