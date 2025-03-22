@@ -5,7 +5,7 @@ import time
 
 # Firebase Initialization
 if not firebase_admin._apps:
-    cred = credentials.Certificate("config/rasd-project.json")
+    cred = credentials.Certificate("/etc/secrets/rasd-project.json")
 
 db = firestore.client()
 
