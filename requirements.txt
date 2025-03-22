@@ -10,3 +10,7 @@ flask
 Pillow
 firebase-admin
 python-dotenv
+firebase-admin
+google-cloud-firestore
+streamlit-option-menu
+folium
