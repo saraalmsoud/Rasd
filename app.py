@@ -10,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-cred = credentials.Certificate("rasd-project.json")
+cred = credentials.Certificate("/etc/secrets/rasd-project.json")
 if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
