@@ -10,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-cred = credentials.Certificate("/etc/secrets/rasd-project.json")
+cred = credentials.Certificate("rasd-project.json")
 if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
@@ -147,7 +147,7 @@ elif selected == "Map":
 elif selected == "Notifications":
     from pages import notifications
     notifications.show()
-
+        
 st.markdown("""
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js"></script>
