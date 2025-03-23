@@ -14,3 +14,4 @@ firebase-admin
 google-cloud-firestore
 streamlit-option-menu
 folium
+streamlit-folium
