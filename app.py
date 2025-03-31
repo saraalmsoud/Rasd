@@ -2,6 +2,12 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import firebase_admin
 from firebase_admin import credentials, firestore
+from streamlit_lottie import st_lottie
+import time
+from streamlit_javascript import st_javascript
+import requests
+import base64
+
 
 st.set_page_config(
     page_title="RASD",
@@ -10,10 +16,37 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+client_width = st_javascript("window.innerWidth")
+is_mobile = client_width and client_width <= 450
+
 cred = credentials.Certificate("rasd-project.json")
 if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
+
+
+if "first_time" not in st.session_state:
+    st.session_state.first_time = True
+
+# دالة تحميل الأنيميشن
+def load_lottieurl(url: str):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+# أنيميشن احترافي
+lottie_loading = load_lottieurl("https://assets10.lottiefiles.com/packages/lf20_usmfx6bp.json")
+
+# عرض الأنيميشن مرة وحدة فقط عند أول دخول
+if st.session_state.first_time:
+    loading_placeholder = st.empty()
+    with loading_placeholder.container():
+        st_lottie(lottie_loading, height=200, speed=1)
+        time.sleep(2)
+    loading_placeholder.empty()
+    st.session_state.first_time = False
+
 
 st.markdown("""
     <style>
@@ -68,70 +101,105 @@ st.markdown("""
 
         @media (max-width: 1200px) {
             [data-testid="stSidebar"] {
-                width: 200px !important;
-                min-width: 200px !important;
-                max-width: 200px !important;
+                width: 230px !important;
+                min-width: 230px !important;
+                max-width: 230px !important;
             }
         }
 
         @media (max-width: 900px) {
             [data-testid="stSidebar"] {
-                width: 180px !important;
-                min-width: 180px !important;
-                max-width: 180px !important;
+                width: 250px !important;
+                min-width: 250px !important;
+                max-width: 250px !important;
             }
         }
 
         @media (max-width: 600px) {
             [data-testid="stSidebar"] {
-                width: 150px !important;
-                min-width: 150px !important;
-                max-width: 150px !important;
+                width: 250px !important;
+                min-width: 250px !important;
+                max-width: 250px !important;
             }
         }
     </style>
 """, unsafe_allow_html=True)
 
+svg_logo = """
+<svg width="100" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4B6FD6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A259FF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <path d="M60 30 L160 70 Q165 75 160 80 L130 100 Q110 115 90 110 L60 100 Q55 90 60 80 Z"
+        fill="url(#grad1)" />
+  <circle cx="125" cy="85" r="12" fill="#1e1e1e"/>
+  <circle cx="125" cy="85" r="6" fill="#A259FF"/>
+  <path d="M70 110 Q65 120 70 130 L100 150 Q105 155 110 150 L140 120 Q150 110 145 95 L135 90"
+        fill="url(#grad1)" />
+</svg>
+"""
+
+
 with st.sidebar:
+    
+    def get_base64_image(image_path):
+        with open(image_path, "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode()
+
+    img_base64 = get_base64_image("static/logo.png")  # تأكدي من مسار الصورة
+
+    st.markdown(
+        f"""
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="data:image/png;base64,{img_base64}" width="120" style="margin: auto;" />
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # القائمة الجانبية
     selected = option_menu(
-    menu_title="RASD Navigation", 
-    options=["Home", "Accident Reports", "Map", "Notifications"],
-    icons=["house", "bar-chart", "map", "bell"],
-    menu_icon="cast",
-    default_index=0,
-    styles={
-        "container": {
-            "background-color": "#1e1e1e",
-            "padding": "10px",
-            "border-radius": "0px",
-            "border": "none",
-            "box-shadow": "none",
-            "border-bottom": "none",
-            "border": "1px solid #1e1e1e"
-        },
-        "menu-title": {
-            "color": "white",
-            "font-size": "15px",
-            "font-weight": "bold"
-        },
-        "icon": {
-            "color": "white",
-            "font-size": "18px"
-        },
-        "nav-link": {
-            "font-size": "16px",
-            "text-align": "left",
-            "margin": "5px",
-            "color": "white",
-            "padding": "8px 10px",
-            "border-radius": "8px"
-        },
-        "nav-link-selected": {
-            "background-color": "#4B6FD6",
-            "color": "white",
+        menu_title="RASD Navigation", 
+        options=["Home", "Accident Reports", "Map", "Notifications"],
+        icons=["house", "bar-chart", "map", "bell"],
+        menu_icon="cast",
+        default_index=0,
+        styles={
+            "container": {
+                "background-color": "#1e1e1e",
+                "padding": "10px",
+                "border-radius": "0px",
+                "border": "none",
+                "box-shadow": "none",
+                "border-bottom": "none",
+                "border": "1px solid #1e1e1e"
+            },
+            "menu-title": {
+                "color": "white",
+                "font-size": "15px",
+                "font-weight": "bold"
+            },
+            "icon": {
+                "color": "white",
+                "font-size": "18px"
+            },
+            "nav-link": {
+                "font-size": "14px",
+                "text-align": "left",
+                "margin": "5px",
+                "color": "white",
+                "padding": "8px 10px",
+                "border-radius": "8px"
+            },
+            "nav-link-selected": {
+                "background-color": "#4B6FD6",
+                "color": "white",
+            }
         }
-    }
-)
+    )
 if selected == "Home":
     from pages import home
     home.show()
