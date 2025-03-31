@@ -16,36 +16,11 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-client_width = st_javascript("window.innerWidth")
-is_mobile = client_width and client_width <= 450
 
 cred = credentials.Certificate("rasd-project.json")
 if not firebase_admin._apps:
     firebase_admin.initialize_app(cred)
 db = firestore.client()
-
-
-if "first_time" not in st.session_state:
-    st.session_state.first_time = True
-
-# دالة تحميل الأنيميشن
-def load_lottieurl(url: str):
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
-
-# أنيميشن احترافي
-lottie_loading = load_lottieurl("https://assets10.lottiefiles.com/packages/lf20_usmfx6bp.json")
-
-# عرض الأنيميشن مرة وحدة فقط عند أول دخول
-if st.session_state.first_time:
-    loading_placeholder = st.empty()
-    with loading_placeholder.container():
-        st_lottie(lottie_loading, height=200, speed=1)
-        time.sleep(2)
-    loading_placeholder.empty()
-    st.session_state.first_time = False
 
 
 st.markdown("""
