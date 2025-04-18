@@ -18,3 +18,4 @@ streamlit-folium
 streamlit-lottie
 requests
 streamlit-javascript
+pyrebase4
