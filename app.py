@@ -23,6 +23,11 @@ if not firebase_admin._apps:
 db = firestore.client()
 
 
+if "user" not in st.session_state:
+    import pages.auth as home_public
+    home_public.show()
+    st.stop()
+
 st.markdown("""
     <style>
         #MainMenu, header, footer {visibility: hidden;}
@@ -117,64 +122,69 @@ svg_logo = """
 </svg>
 """
 
+import base64  # تأكدي إنك مستوردة base64 فوق
 
-with st.sidebar:
-    
-    def get_base64_image(image_path):
-        with open(image_path, "rb") as img_file:
-            return base64.b64encode(img_file.read()).decode()
+if "user" in st.session_state:
+    with st.sidebar:
 
-    img_base64 = get_base64_image("static/logo.png")  # تأكدي من مسار الصورة
+        def get_base64_image(image_path):
+            with open(image_path, "rb") as img_file:
+                return base64.b64encode(img_file.read()).decode()
 
-    st.markdown(
-        f"""
-        <div style="text-align: center; margin-bottom: 20px;">
-            <img src="data:image/png;base64,{img_base64}" width="120" style="margin: auto;" />
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+        img_base64 = get_base64_image("static/logo.png")  # تأكدي من المسار الصحيح
 
-    # القائمة الجانبية
-    selected = option_menu(
-        menu_title="RASD Navigation", 
-        options=["Home", "Accident Reports", "Map", "Notifications"],
-        icons=["house", "bar-chart", "map", "bell"],
-        menu_icon="cast",
-        default_index=0,
-        styles={
-            "container": {
-                "background-color": "#1e1e1e",
-                "padding": "10px",
-                "border-radius": "0px",
-                "border": "none",
-                "box-shadow": "none",
-                "border-bottom": "none",
-                "border": "1px solid #1e1e1e"
-            },
-            "menu-title": {
-                "color": "white",
-                "font-size": "15px",
-                "font-weight": "bold"
-            },
-            "icon": {
-                "color": "white",
-                "font-size": "18px"
-            },
-            "nav-link": {
-                "font-size": "14px",
-                "text-align": "left",
-                "margin": "5px",
-                "color": "white",
-                "padding": "8px 10px",
-                "border-radius": "8px"
-            },
-            "nav-link-selected": {
-                "background-color": "#4B6FD6",
-                "color": "white",
+        st.markdown(
+            f"""
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="data:image/png;base64,{img_base64}" width="120" style="margin: auto;" />
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        selected = option_menu(
+            menu_title="RASD Navigation", 
+            options=["Home", "Accident Reports", "Map", "Notifications", "Logout"],
+            icons=["house", "bar-chart", "map", "bell", "box-arrow-right"],
+            menu_icon="cast",
+            default_index=0,
+            styles={
+                "container": {
+                    "background-color": "#1e1e1e",
+                    "padding": "10px",
+                    "border-radius": "0px",
+                    "border": "none",
+                    "box-shadow": "none",
+                    "border-bottom": "none",
+                    "border": "1px solid #1e1e1e"
+                },
+                "menu-title": {
+                    "color": "white",
+                    "font-size": "15px",
+                    "font-weight": "bold"
+                },
+                "icon": {
+                    "color": "white",
+                    "font-size": "18px"
+                },
+                "nav-link": {
+                    "font-size": "14px",
+                    "text-align": "left",
+                    "margin": "5px",
+                    "color": "white",
+                    "padding": "8px 10px",
+                    "border-radius": "8px"
+                },
+                "nav-link-selected": {
+                    "background-color": "#4B6FD6",
+                    "color": "white",
+                }
             }
-        }
-    )
+        )
+    
+
+    
+    
 if selected == "Home":
     from pages import home
     home.show()
@@ -190,6 +200,12 @@ elif selected == "Map":
 elif selected == "Notifications":
     from pages import notifications
     notifications.show()
+    
+elif selected == "Logout":
+    for key in list(st.session_state.keys()):
+        del st.session_state[key]
+    st.success("You have been logged out.")
+    st.rerun()
         
 st.markdown("""
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
