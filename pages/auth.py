@@ -4,6 +4,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from datetime import datetime
 import json
+import os
 
 firebaseConfig = json.loads(os.environ.get("FIREBASE_CONFIG"))
 firebase = pyrebase.initialize_app(firebaseConfig)
