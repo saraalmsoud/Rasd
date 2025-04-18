@@ -6,7 +6,17 @@ from datetime import datetime
 import json
 import os
 
-firebaseConfig = json.loads(os.environ.get("FIREBASE_CONFIG"))
+firebaseConfig = {
+    "apiKey": os.environ.get("apiKey"),
+    "authDomain": os.environ.get("authDomain"),
+    "databaseURL": os.environ.get("databaseURL"),
+    "projectId": os.environ.get("projectId"),
+    "storageBucket": os.environ.get("storageBucket"),
+    "messagingSenderId": os.environ.get("messagingSenderId"),
+    "appId": os.environ.get("appId"),
+    "measurementId": os.environ.get("measurementId")
+}
+
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
