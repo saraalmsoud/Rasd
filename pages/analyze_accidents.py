@@ -86,6 +86,22 @@ def show():
                 .report-card h4, .report-card p, .report-card b {
                     color: white !important;
                 }
+                
+                
+                .stButton button {
+                background-color: #3657C2 !important;
+                color: white !important;
+                font-weight: bold !important;
+                border-radius: 25px !important;
+                padding: 8px 20px !important;
+                border: none !important;
+            }
+
+            .stButton button:hover {
+                background-color: #4B6FD6 !important;
+            }
+            
+        
 
                 .accident-image {
                     width: 100%;
@@ -131,6 +147,11 @@ def show():
                     background-color: #3657C2 !important; 
                     border: 3px solid #4B6FD6 !important; 
                 }
+                
+                
+            
+                
+                
 
                 div[data-baseweb="radio"] input:checked + div {
                     background-color: transparent !important;
@@ -161,6 +182,9 @@ def show():
         """, unsafe_allow_html=True)
 
         st.markdown("<h1 class='title'>Accident Reports</h1>", unsafe_allow_html=True)
+        
+    
+        
 
         filter_option = st.radio(
             "Filter by :",
@@ -202,12 +226,15 @@ def show():
                 """, unsafe_allow_html=True)
 
                 if accident["status"] == "pending":
-                    if st.button(f"Confirm Resolution", key=f"resolve_{accident['id']}"):
-                        try:
-                            db.collection("accidents").document(accident["id"]).update({"status": "resolved"})
-                            st.success(f"Accident {accident['id']} resolved successfully.")
-                        except Exception as e:
-                            st.error(f"⚠️ Error updating accident status: {e}")
+                    if st.session_state.get("is_admin"):
+                        if st.button(f"Confirm Resolution", key=f"resolve_{accident['id']}"):
+                            try:
+                                db.collection("accidents").document(accident["id"]).update({"status": "resolved"})
+                                st.success(f"Accident {accident['id']} resolved successfully.")
+                            except Exception as e:
+                                st.error(f"⚠️ Error updating accident status: {e}")
+                    else:
+                        st.info("Waiting for admin confirmation.")
 
                 elif accident["status"] == "resolved":
                     st.button(f"Resolved Successfully ✔", key=f"resolved_{accident['id']}", disabled=True)
