@@ -5,9 +5,7 @@ from firebase_admin import credentials, firestore
 from datetime import datetime
 import json
 
-with open("config/rasd-project.json") as f:
-    firebaseConfig = json.load(f)
-
+firebaseConfig = json.loads(os.environ.get("FIREBASE_CONFIG"))
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
