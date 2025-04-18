@@ -61,7 +61,7 @@ def show():
         font-weight: 700;
         text-align: center;
         color: #3657C2;
-        text-shadow: 0 0 2px white, 0 0 6px white;
+        text-shadow: 0 0 2px white, 0 0 2px white;
         margin-top: 3rem;
         animation: fadeIn 1.2s ease-out;
     }
@@ -186,7 +186,7 @@ def show():
                 st.session_state["role"] = user_data.get("role", "user")
                 st.session_state["selected_page"] = "Home"
 
-                st.rerun()
+                st.stop()
 
             except Exception:
                 st.warning("Login failed. Please check your credentials.")
